@@ -1,0 +1,22 @@
+{
+  "name": "hydromelon",
+  "version": "1.0.0",
+  "description": "The discord bot for all your needs.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "lint": "prettier --write ."
+  },
+  "author": "importly",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0",
+    "jshint": "^2.12.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
+  }
+}
