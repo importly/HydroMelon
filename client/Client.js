@@ -1,8 +1,6 @@
 require("dotenv").config();
 const { Collection, Client } = require("discord.js");
 
-const prefix = process.env.P;
-
 class Bot extends Client {
   constructor() {
     super();
@@ -10,6 +8,7 @@ class Bot extends Client {
     //Create collections
     this.commands = new Collection();
     this.token = process.env.TOKEN;
+    this.prefix = process.env.PREFIX
     this.sniper = new Collection();
 
     //Import modules
@@ -20,12 +19,14 @@ class Bot extends Client {
   commandHandler() {
     this.fs.readdirSync("./commands").map((directory) => {
       this.fs.readdirSync(`./commands/${directory}/`).map((file) => {
-        let CMD = require(`../commands/${directory}/${file}`);
-        this.commands.set(CMD.name, CMD);
+        let CMDC = require(`../commands/${directory}/${file}`);
+        let CMD = new CMDC()
+        this.commands.set(CMD.Cname, CMDC);
+        console.log(CMD.aliases)
         CMD.aliases.forEach((e) => {
-          this.commands.set(e.name, CMD);
+          this.commands.set(e, CMDC);
         });
-        console.log(`Command ${CMD.name} loaded in ${directory}`);
+        console.log(`Command ${CMD.Cname} loaded in ${directory}`);
       });
     });
   }
@@ -38,12 +39,21 @@ class Bot extends Client {
         image:message.attachments.first() ? message.attachments.first().proxyURL : null,
       });
     });
-    
   }
+
+  welcomeHandler() {
+    this.on("guildMemberAdd",(member) => {
+      let channel = this.channels.cache.find(ch => ch.name === 'welcome')
+      channel.send(`Welcome to the server, ${member} make sure to take the exam, also study hard! `);
+    })
+  }
+
+  //Initalize bot or suffer
 
   initBot() {
     this.commandHandler();
     this.deletionHandler();
+    this.welcomeHandler();
 
     this.on("ready", async () => {
       require("../events/ready")(this);
@@ -53,20 +63,20 @@ class Bot extends Client {
       //If the message comes from another bot or doesnt start with the prefix, then return
       if (
         message.author.bot ||
-        !message.content.startsWith(prefix) ||
+        !message.content.startsWith(this.prefix) ||
         !message.guild
       )
         return;
 
-      const args = message.content.slice(prefix.length).trim().split(",");
+      const args = message.content.slice(this.prefix.length).trim().split(",").map(Function.prototype.call, String.prototype.trim);
       const lower = args.shift().toLowerCase();
 
-      let commandFiles;
+      
       //Navigate the collection filled with commands, get them, and run the run function in them
+      
       if (this.commands.has(lower)) {
-        commandFiles = this.commands.get(lower);
-        console.log(commandFiles);
-        commandFiles.execute(this, message, args);
+        let command_class = this.commands.get(lower);
+        command_class.execute(this, message, args);
       }
     });
 

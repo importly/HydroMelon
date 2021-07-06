@@ -4,9 +4,9 @@ const BaseCommand = require("../../client/BaseCommand");
 
 class snipe extends BaseCommand {
     constructor() {
-        super("ping", "Measures latency", "misc", ["latency"]);
+        super("snipe", "Measures latency", "misc", ["latency"]);
     }
-    static async execute(client, message, args) {
+    static execute(client, message, args) {
         if (client.sniper.has(message.channel.id)) {
             let stuff = client.sniper.get(message.channel.id);
             let sendr = new MessageEmbed();
@@ -17,8 +17,9 @@ class snipe extends BaseCommand {
             }
             message.channel.send(sendr);
         } else {
-            message.channel.send("Rip, I guess I don't have the message");
+            message.channel.send("Message is unknown just like your mom!");
         }
     }
 }
+
 module.exports = snipe;
