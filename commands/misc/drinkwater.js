@@ -4,7 +4,7 @@ const BaseCommand = require("../../client/BaseCommand");
 
 class drinkwater extends BaseCommand {
   constructor() {
-    super("water", "Measures latency", "misc", ["latency"]);
+    super("water", "drink water", "misc", ["drinkwater"]);
   }
   static async execute(client, message, args) {
     message.channel.send("Drink water or perish from dehydration");

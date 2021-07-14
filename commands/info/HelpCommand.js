@@ -5,7 +5,7 @@ const fs = require("fs");
 
 class help extends BaseCommand {
   constructor() {
-    super("help", "This command that helps you", "info", ["helpme","info"]);
+    super("help", "This command that helps you", "info", ["helpme","info","commands","cmds"]);
   }
     /**
    *
@@ -16,15 +16,15 @@ class help extends BaseCommand {
 
   static execute(client, message, args) {
     let sender = new MessageEmbed();
-    sender.setTitle("The Help Board");
+    sender.setTitle("HydroBot's commands").setTimestamp();
     fs.readdirSync("./commands").map((directory) => {
       let command = [];
       fs.readdirSync(`./commands/${directory}/`).map((file) => {
         let CMDC = require(`../../commands/${directory}/${file}`);
         let CMD = new CMDC()
-        command.push(CMD.Cname);
+        command.push(CMD.Cname + " - " + CMD.description + " | " + CMD.aliases.join(", "));
       });
-      sender.addField(directory,command);
+      sender.addField(directory, command, true);
     });
     message.channel.send(sender);
   }

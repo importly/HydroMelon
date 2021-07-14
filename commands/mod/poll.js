@@ -1,5 +1,4 @@
-const { MessageEmbed, Message } = require("discord.js");
-const Client = require("../../client/Client");
+const { MessageEmbed } = require("discord.js");
 const BaseCommand = require("../../client/BaseCommand");
 
 const nums = {

@@ -5,19 +5,26 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
+    "dev": "nodemon --ignore ./data index.js",
     "lint": "prettier --write ."
   },
   "author": "importly",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^12.5.1",
+    "@discordjs/opus": "^0.5.3",
+    "discord.js": "^12.5.3",
     "dotenv": "^8.2.0",
-    "jshint": "^2.12.0"
+    "ffmpeg": "^0.0.4",
+    "ffmpeg-static": "^4.4.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "jshint": "^2.12.0",
+    "puppeteer": "^10.1.0",
+    "youtube-search": "^1.1.6",
+    "ytdl-core": "^4.8.3"
   },
   "devDependencies": {
     "eslint": "^7.30.0",
-    "nodemon": "^2.0.7",
+    "nodemon": "^2.0.9",
     "prettier": "^2.2.1"
   }
 }

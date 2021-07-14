@@ -4,7 +4,7 @@ const BaseCommand = require("../../client/BaseCommand");
 
 class snipe extends BaseCommand {
     constructor() {
-        super("snipe", "Measures latency", "misc", ["latency"]);
+        super("snipe", "gets deleted messages", "misc", []);
     }
     static execute(client, message, args) {
         if (client.sniper.has(message.channel.id)) {
@@ -17,7 +17,7 @@ class snipe extends BaseCommand {
             }
             message.channel.send(sendr);
         } else {
-            message.channel.send("Message is unknown just like your mom!");
+            message.channel.send("Message is unknown");
         }
     }
 }

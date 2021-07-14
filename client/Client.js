@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { Collection, Client } = require("discord.js");
+const news = require("../events/news.js");
 
 class Bot extends Client {
   constructor() {
@@ -11,10 +12,14 @@ class Bot extends Client {
     this.prefix = process.env.PREFIX
     this.sniper = new Collection();
 
+    this.handler = {};
+
     //Import modules
     this.fs = require("fs");
     this.path = require("path");
   }
+
+  
 
   commandHandler() {
     this.fs.readdirSync("./commands").map((directory) => {
@@ -44,7 +49,7 @@ class Bot extends Client {
   welcomeHandler() {
     this.on("guildMemberAdd",(member) => {
       let channel = this.channels.cache.find(ch => ch.name === 'welcome')
-      channel.send(`Welcome to the server, ${member} make sure to take the exam, also study hard! `);
+      channel.send(`Welcome to the server, ${member} make sure to take the exam, also study hard!`);
     })
   }
 
@@ -69,7 +74,12 @@ class Bot extends Client {
         return;
 
       const args = message.content.slice(this.prefix.length).trim().split(",").map(Function.prototype.call, String.prototype.trim);
-      const lower = args.shift().toLowerCase();
+      let args2 = args[0].split(" ")
+      const lower = args2.shift().toLowerCase();
+      args2 = args2.join(" ");
+      args[0] = args2;
+
+      //console.log(args,lower,args2);
 
       
       //Navigate the collection filled with commands, get them, and run the run function in them
@@ -81,6 +91,9 @@ class Bot extends Client {
     });
 
     this.login(this.token);
+
+    // News Updater
+    news(this)
   }
 }
 
