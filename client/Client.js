@@ -39,7 +39,7 @@ class Bot extends Client {
   deletionHandler(){
     this.on("messageDelete", (message) => {
       this.sniper.set(message.channel.id, {
-        content:message.content,
+        content:message.content ? message.content : "No text found",
         author:message.author.username,
         image:message.attachments.first() ? message.attachments.first().proxyURL : null,
       });

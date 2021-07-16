@@ -10,10 +10,11 @@ class snipe extends BaseCommand {
         if (client.sniper.has(message.channel.id)) {
             let stuff = client.sniper.get(message.channel.id);
             let sendr = new MessageEmbed();
+            if (!stuff.content) return;
             sendr.setTitle("I got you " + stuff.author);
             sendr.addField("The deleted message was", stuff.content);
             if (stuff.image) {
-                sendr.image = stuff.image;
+                sendr.setImage(stuff.image);
             }
             message.channel.send(sendr);
         } else {

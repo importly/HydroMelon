@@ -76,7 +76,7 @@ async function stanton_website(client) {
   for (const [key, value] of Object.entries(updated_sites_names)) {
     if (updated_sites_names[key].broadcasted == false) {
       let channel = client.channels.cache.find(
-        (ch) => ch.name === "stanton-school-announcements"
+        (ch) => ch.name === "stanton-school-news"
       );
       let channel_2 = client.channels.cache.find(
         (ch) => ch.name === "stanton-school-announcements-feed"

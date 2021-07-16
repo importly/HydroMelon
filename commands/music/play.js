@@ -73,12 +73,13 @@ class play extends BaseCommand {
   }
 
   let info = await ytdl.getInfo(finalSearch);
-  let thumbnail = info.videoDetails.thumbnail.thumbnails[info.videoDetails.thumbnail.thumbnails.length - 1].url;
+  let thumbnail = info.videoDetails.thumbnail.thumbnails[info.videoDetails.thumbnails.length - 1].url;
   playSong(message, finalSearch);
   let playembed = new MessageEmbed()
     .setTitle("Now playing:")
     .setDescription(`${info.videoDetails.title}`)
-    .setImage(thumbnail);
+    .setImage(thumbnail)
+    .setFooter(`${ Math.floor(info.videoDetails.lengthSeconds / 60)} m ${info.videoDetails.lengthSeconds % 60} s | Channel: ${info.videoDetails.author.name}`);
   message.channel.send(playembed);
   console.log("Playing Song");
   }
