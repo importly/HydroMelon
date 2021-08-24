@@ -1,16 +1,17 @@
 require("dotenv").config();
 const { Collection, Client } = require("discord.js");
 const news = require("../events/news.js");
+const roles = require("../events/reaction_roles.js");
 
 class Bot extends Client {
   constructor() {
-    super();
+    super({ partials: ["CHANNEL", "MESSAGE", "REACTION"] });
 
     //Create collections
     this.commands = new Collection();
     this.token = process.env.TOKEN;
     this.prefix = process.env.PREFIX
-    this.sniper = new Collection();
+    this.sniper = {};
 
     this.handler = {};
 
@@ -36,21 +37,24 @@ class Bot extends Client {
     });
   }
 
-  deletionHandler(){
+  deletionHandler() {
     this.on("messageDelete", (message) => {
-      this.sniper.set(message.channel.id, {
+      if (!this.sniper[message.channel.id]) {
+        this.sniper[message.channel.id] = []
+      }
+      this.sniper[message.channel.id].unshift({
         content:message.content ? message.content : "No text found",
-        author:message.author.username,
+        author:message.author ? message.author.username : "No author found",
         image:message.attachments.first() ? message.attachments.first().proxyURL : null,
       });
-    });
+  })
   }
-
+  
   welcomeHandler() {
-    this.on("guildMemberAdd",(member) => {
-      let channel = this.channels.cache.find(ch => ch.name === 'welcome')
-      channel.send(`Welcome to the server, ${member} make sure to take the exam, also study hard!`);
-    })
+    // this.on("guildMemberAdd",(member) => {
+    //   let channel = this.channels.cache.find(ch => ch.name === 'welcome')
+    //   channel.send(`Welcome to the server, ${member} make sure to take the exam, also study hard!`);
+    // })
   }
 
   //Initalize bot or suffer
@@ -59,6 +63,7 @@ class Bot extends Client {
     this.commandHandler();
     this.deletionHandler();
     this.welcomeHandler();
+    roles(this)
 
     this.on("ready", async () => {
       require("../events/ready")(this);
