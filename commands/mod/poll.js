@@ -29,8 +29,8 @@ class deleter extends BaseCommand {
     console.log(args)
     const embed = new MessageEmbed()
       .setColor("#33b864")
-      .setTitle(args[0])
-      .setDescription(args[1]);
+      .setTitle(`Poll: ${args[0]}`)
+      .setDescription(args[1])
 
     for (let i = 2; i < args.length; i++) {
       embed.addField(args[i],nums[i-2], true);
